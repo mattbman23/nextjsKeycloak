@@ -1,36 +1,35 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Setup
 
-## Getting Started
+## Setting Keycloak container
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```sh
+docker run -p 8080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin quay.io/keycloak/keycloak:26.0.5 start-dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Configuring Keycloak
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. Login to your keycloak (http://localhost:8080 if local)
+2. Create realm (top left button) and give it a name
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+![realm creation](./public/setups/realm_creation.png)
 
-## Learn More
+3. Clients > create client
+   - General Settings
+     - Client type = OpenID Connect
+     - Client ID = whatever you want
+   - Capability config
+     - enable **Client authentication**
+     - enable **Standard flow**
+   - Login settings
+     - Valid redirect URIs = "http://localhost:3000/\*"
+4. Clients > <your_newly_created_client> > Credentials
 
-To learn more about Next.js, take a look at the following resources:
+   - Copy Client Secret and save it as **KEYCLOAK_SECRET** in .env file
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+5. Create user and set password
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+6. Update <realm_name> in .env file to your created realm name
 
-## Deploy on Vercel
+7. npm i
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+8. npm run dev
