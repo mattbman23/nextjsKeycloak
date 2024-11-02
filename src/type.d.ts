@@ -8,6 +8,7 @@ declare global {
       KEYCLOAK_ISSUER: string;
       KEYCLOAK_REFRESH_URL: string;
       KEYCLOAK_LOGOUT_URL: string;
+      POSTGREST_API_URL: string;
     }
   }
 }

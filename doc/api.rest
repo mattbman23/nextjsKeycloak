@@ -1,0 +1,26 @@
+@baseUrl=http://localhost:3005/todolist
+
+### Get all todos
+GET {{baseUrl}}
+
+### Get todo by id
+GET {{baseUrl}}?id=eq.1
+
+### Create todo
+POST {{baseUrl}}
+Content-Type: application/json
+
+{
+    "task": "sleep more"
+}
+
+### Update todo by id
+PATCH {{baseUrl}}?id=eq.1
+Content-Type: application/json
+
+{
+    "task": "prep for ramen"
+}
+
+### Delete todo by id
+DELETE {{baseUrl}}?id=eq.1

@@ -1,0 +1,34 @@
+version: "3"
+services:
+  postgrest:
+    image: postgrest/postgrest
+    ports:
+      - "3005:3000"
+    environment:
+      PGRST_DB_URI: postgres://app_user:secret@postgres:5432/postgres
+      PGRST_DB_SCHEMA: public
+      PGRST_DB_ANON_ROLE: app_user #In production this role should not be the same as the one used for the connection
+      PGRST_SERVER_PROXY_URI: "http://127.0.0.1:3005"
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: postgres
+      POSTGRES_USER: app_user
+      POSTGRES_PASSWORD: secret
+      PGDATA: /var/lib/postgresql/data
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.0.5
+    ports:
+      - "8080:8080"
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: adminpassword
+    command: start-dev
+volumes:
+  db-data:
