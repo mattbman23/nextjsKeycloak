@@ -16,3 +16,19 @@ INSERT INTO todolist (task, is_completed) VALUES
 ('Fix the leaking faucet', TRUE),
 ('Schedule doctor appointment', FALSE),
 ('Organize the desk', TRUE);
+
+CREATE ROLE standard NOLOGIN;
+GRANT ALL ON public.todolist TO standard;
+
+
+GRANT USAGE ON SCHEMA public TO standard;
+
+GRANT ALL ON public.roles_example TO web_anon;
+
+REVOKE ALL ON public.roles_example FROM web_anon;
+
+
+GRANT USAGE ON SCHEMA public TO standard;
+GRANT ALL ON public.roles_example TO standard;
+
+GRANT USAGE, SELECT ON SEQUENCE todolist_id_seq TO standard;

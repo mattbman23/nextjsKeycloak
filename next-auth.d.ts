@@ -29,6 +29,7 @@ declare module "next-auth" {
     access_token: string;
     roles: string[];
     error: string?;
+    ac: string;
   }
   interface User {
     role: string;

@@ -1,4 +1,3 @@
-version: "3"
 services:
   postgrest:
     image: postgrest/postgrest
@@ -7,8 +6,10 @@ services:
     environment:
       PGRST_DB_URI: postgres://app_user:secret@postgres:5432/postgres
       PGRST_DB_SCHEMA: public
-      PGRST_DB_ANON_ROLE: app_user #In production this role should not be the same as the one used for the connection
+      PGRST_DB_ANON_ROLE: app_user
       PGRST_SERVER_PROXY_URI: "http://127.0.0.1:3005"
+      PGRST_JWT_SECRET: '{"kty":"RSA","e":"AQAB","kid":"8a2ab8b1-4767-4354-ba3e-bad602379bd2","n":"u8J_Fkgrj-SCjZ41D2UattJa0RPUSxeOyMikMeKK1akt6s8brjNvBEWvDbz8hNtJPBHRvpZhOlY4WZPU8O_1XdCjB7wznhJG-34Vm4N-hmNKb1QduKM9TB5w4irdR_hzz0E4IgsYNCw-YcKdm96gZXEYhMxcbJVUWI_fvNP3FmoSNMIIKFgOuD4y4sRvCukeFttmXGLB2uJHA8xhdusxnDC7-HEUtiihWFVf-TI1sLWJibPAAbmYsmg05k-Ca5v1GSgQGMnGXxfYTtyT4_jYEcVoZGqKmygEQhdrZZYrQ8DGFtT5twfhAtI9w71bABc7G0Mmjb9OpXsFO8OQHKUAOw"}'
+      PGRST_JWT_ROLE_CLAIM_KEY: ".resource_access.nextjs.roles[0]"
     depends_on:
       - postgres
   postgres:

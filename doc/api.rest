@@ -1,26 +1,60 @@
 @baseUrl=http://localhost:3005/todolist
 
+@keycloak=http://localhost:8080
+
+@accessToken=<accessToken>
+
+@kc_client_secret=<kc_client_secret>
+
 ### Get all todos
 GET {{baseUrl}}
+Authorization: Bearer {{accessToken}}
 
 ### Get todo by id
 GET {{baseUrl}}?id=eq.1
-
-### Create todo
+### Create todo 
 POST {{baseUrl}}
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
-    "task": "sleep more"
-}
+    "task":"eat"
+} 
 
 ### Update todo by id
 PATCH {{baseUrl}}?id=eq.1
 Content-Type: application/json
 
 {
-    "task": "prep for ramen"
+    "message_body": "prep for ramen"
 }
 
 ### Delete todo by id
-DELETE {{baseUrl}}?id=eq.1
+DELETE {{baseUrl}}?id=eq.2
+Authorization: Bearer {{accessToken}} 
+ 
+### Get admin access_token 
+POST {{keycloak}}/realms/master/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=admin-cli&username=admin&password=adminpassword&grant_type=password
+
+##### Get access_token
+POST {{keycloak}}/realms/demo/protocol/openid-connect/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=nextjs&username=matthew&password=matthew&grant_type=password&client_secret={{kc_client_secret}}
+
+###
+GET {{keycloak}}/admin/realms/demo/users/count
+Authorization: Bearer {{accessToken}}
+
+### 
+GET {{keycloak}}/admin/realms/demo/users?username
+Authorization: Bearer {{accessToken}}
+
+### Validate access token
+POST {{keycloak}}/realms/demo/protocol/openid-connect/token/introspect
+Content-Type: application/x-www-form-urlencoded
+
+client_id=nextjs&client_secret={{kc_client_secret}}&token={{accessToken}}
