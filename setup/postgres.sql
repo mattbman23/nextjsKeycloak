@@ -17,18 +17,23 @@ INSERT INTO todolist (task, is_completed) VALUES
 ('Schedule doctor appointment', FALSE),
 ('Organize the desk', TRUE);
 
+CREATE ROLE anon NOLOGIN;
+
 CREATE ROLE standard NOLOGIN;
-GRANT ALL ON public.todolist TO standard;
 
-
-GRANT USAGE ON SCHEMA public TO standard;
-
-GRANT ALL ON public.roles_example TO web_anon;
-
-REVOKE ALL ON public.roles_example FROM web_anon;
-
+CREATE ROLE admin NOLOGIN;
+-- STANDARD
 
 GRANT USAGE ON SCHEMA public TO standard;
-GRANT ALL ON public.roles_example TO standard;
+
+GRANT ALL ON todolist TO standard;
 
 GRANT USAGE, SELECT ON SEQUENCE todolist_id_seq TO standard;
+
+-- ADMIN
+
+GRANT USAGE ON SCHEMA public TO admin;
+
+GRANT ALL ON todolist TO admin;
+
+GRANT USAGE, SELECT ON SEQUENCE todolist_id_seq TO admin;
