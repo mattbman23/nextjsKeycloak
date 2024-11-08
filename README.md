@@ -39,14 +39,14 @@ docker-compose up -d keycloak
 
    **`Realm Role`**: Go to `Realm roles` section on the left and create a new role called `admin`
 
-6. Create a user by going to the `Users` section and follow the steps. Make sure to assign a password by going to credentials after creation and setup the password
+6. Create a user by going to the `Users` section and follow the steps. Make sure to assign a password by going to credentials tab after creation and setup the password
 
-   **`Assign Role`**: Go to `Realm mapping` tab within your newly created user details. Click on **Assign role** and select `nextjs admin`. Click on **Assign role** again and change filter to **by realm roles** and select the admin
+   **`Assign Role`**: Go to `Role mapping` tab within your newly created user details. Click on **Assign role** and select `nextjs admin`. Click on **Assign role** again and change filter to **by realm roles** and select the admin
 
    **`Test Login`**:
 
    1. Go to `/doc/api.rest` file and replace the `kc_client_secret` value with the `client secret from above`
-   2. GO to line 48 and send the request after matching the username and password to your user
+   2. Go to line 48 and send the request after matching the username and password to your user
 
 ## 3. Postrest setup
 
@@ -63,7 +63,7 @@ Before we start the postgrest container, we need to generate the `jwk` key for i
 7. Make sure that there are spaces between begin/end key then click on submit
 8. Save the generated keys and paste it into the `PGRST_JWT_SECRET` value in the `docker-compose.yml` file on line 11
 
-Start the postgrest container
+Start the postgrest container by running
 
 ```sh
 docker-compose up -d postgrest
@@ -74,14 +74,15 @@ docker-compose up -d postgrest
 - Install the require dependencies by running
 
 ```sh
-npm run i
+npm i
 ```
 
 - Configure environment variables
 
-  1. Copy .sample.env and make a new file called .env
+  1. Copy `.sample.env` file and make a new file called .env
   2. Set the `KEYCLOAK_CLIENT_ID` value to `nextjs`
   3. Set the `KEYCLOAK_SECRET` value to the `Client Secret` from aboves
+  4. Replace `<realm_name>` to `demo for line 7, 8, and 9
 
 - Run the nextjs application by running
 
