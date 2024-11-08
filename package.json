@@ -8,6 +8,11 @@
     "start": "next start",
     "lint": "next lint"
   },
+  "packageManager": "npm@10.5.2",
+  "overrides": {
+    "react": "$react",
+    "react-dom": "$react-dom"
+  },
   "dependencies": {
     "@raphiniert/ra-data-postgrest": "^2.4.1",
     "cryptr": "^6.3.0",

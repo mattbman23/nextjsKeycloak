@@ -4,6 +4,8 @@
 
 @accessToken=<accessToken>
 
+@adminAccessToken=<adminAccessToken>
+
 @kc_client_secret=<kc_client_secret>
 
 ### Get all todos
@@ -12,6 +14,8 @@ Authorization: Bearer {{accessToken}}
 
 ### Get todo by id
 GET {{baseUrl}}?id=eq.1
+Authorization: Bearer {{accessToken}}
+
 ### Create todo 
 POST {{baseUrl}}
 Content-Type: application/json
@@ -24,9 +28,10 @@ Authorization: Bearer {{accessToken}}
 ### Update todo by id
 PATCH {{baseUrl}}?id=eq.1
 Content-Type: application/json
+Authorization: Bearer {{accessToken}}
 
 {
-    "message_body": "prep for ramen"
+    "task": "prep for ramen"
 }
 
 ### Delete todo by id
@@ -45,13 +50,13 @@ Content-Type: application/x-www-form-urlencoded
 
 client_id=nextjs&username=matthew&password=matthew&grant_type=password&client_secret={{kc_client_secret}}
 
-###
+### Get count of all users
 GET {{keycloak}}/admin/realms/demo/users/count
-Authorization: Bearer {{accessToken}}
+Authorization: Bearer {{adminAccessToken}}
 
-### 
-GET {{keycloak}}/admin/realms/demo/users?username
-Authorization: Bearer {{accessToken}}
+### Get user where username is matthew
+GET {{keycloak}}/admin/realms/demo/users?username=matthew
+Authorization: Bearer {{adminAccessToken}}
 
 ### Validate access token
 POST {{keycloak}}/realms/demo/protocol/openid-connect/token/introspect
