@@ -1,9 +1,8 @@
-"use client";
+import { auth } from "@/auth";
 
-import { useSession } from "next-auth/react";
+export default async function Home() {
+  const session = await auth();
 
-export default function Home() {
-  const { data: session } = useSession();
   return (
     <main className="flex-1 flex items-center text-5xl justify-center font-[family-name:var(--font-geist-sans)]">
       Welcome {session?.user?.name}

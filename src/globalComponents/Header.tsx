@@ -1,30 +1,15 @@
-"use client";
-
 import { logout_session } from "@/actions/auth";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { auth, signOut, signIn } from "@/auth";
 import Link from "next/link";
-import { startTransition, useEffect } from "react";
 
-export const Header = ({ className }: { className?: string }) => {
-  const { data: session, status } = useSession();
+export const Header = async ({ className }: { className?: string }) => {
+  const session = await auth();
 
   const headerLinks = ["Home", "About", "Contact"];
 
-  useEffect(() => {
-    if (
-      status != "loading" &&
-      session &&
-      session?.error === "RefreshAccessTokenError"
-    ) {
-      signOut({ redirectTo: "/" });
-    }
-  }, [session, status]);
-
-  const logoutHandler = () => {
-    startTransition(() => {
-      logout_session().then(() => signOut({ redirectTo: "/" }));
-    });
-  };
+  if (session && session?.error === "RefreshAccessTokenError") {
+    signOut({ redirectTo: "/" });
+  }
 
   return (
     <nav className={`bg-white border-gray-200 dark:bg-gray-900 ${className}`}>
@@ -87,23 +72,28 @@ export const Header = ({ className }: { className?: string }) => {
 
             {session?.user?.name ? (
               <li>
-                <div
-                  onClick={logoutHandler}
+                <form
+                  action={async () => {
+                    "use server";
+                    await logout_session();
+                    await signOut({ redirectTo: "/" });
+                  }}
                   className="block px-3 py-2 text-gray-900 rounded cursor-pointer hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  aria-current="page"
                 >
-                  Logout
-                </div>
+                  <button type="submit">Logout</button>
+                </form>
               </li>
             ) : (
               <li>
-                <div
-                  onClick={() => signIn("keycloak")}
+                <form
+                  action={async () => {
+                    "use server";
+                    await signIn("keycloak");
+                  }}
                   className="block px-3 py-2 text-gray-900 rounded cursor-pointer hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
-                  aria-current="page"
                 >
-                  Login
-                </div>
+                  <button type="submit">Login</button>
+                </form>
               </li>
             )}
           </ul>
