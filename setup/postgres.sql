@@ -1,11 +1,12 @@
-CREATE TABLE todolist (
+CREATE TABLE todos (
     id SERIAL PRIMARY KEY,
     task VARCHAR(255) NOT NULL,
     is_completed BOOLEAN DEFAULT FALSE,
+    resources VARCHAR(255),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
-INSERT INTO todolist (task, is_completed) VALUES 
+INSERT INTO todos (task, is_completed) VALUES 
 ('Buy groceries', FALSE),
 ('Read a book', FALSE),
 ('Call mom', TRUE),
@@ -26,14 +27,14 @@ CREATE ROLE admin NOLOGIN;
 
 GRANT USAGE ON SCHEMA public TO standard;
 
-GRANT ALL ON todolist TO standard;
+GRANT ALL ON todos TO standard;
 
-GRANT USAGE, SELECT ON SEQUENCE todolist_id_seq TO standard;
+GRANT USAGE, SELECT ON SEQUENCE todos_id_seq TO standard;
 
 -- ADMIN
 
 GRANT USAGE ON SCHEMA public TO admin;
 
-GRANT ALL ON todolist TO admin;
+GRANT ALL ON todos TO admin;
 
-GRANT USAGE, SELECT ON SEQUENCE todolist_id_seq TO admin;
+GRANT USAGE, SELECT ON SEQUENCE todos_id_seq TO admin;

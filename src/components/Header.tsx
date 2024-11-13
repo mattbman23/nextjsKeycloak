@@ -5,7 +5,7 @@ import Link from "next/link";
 export const Header = async ({ className }: { className?: string }) => {
   const session = await auth();
 
-  const headerLinks = ["Home", "About", "Contact"];
+  const headerLinks = ["Todo", "About", "Contact"];
 
   if (session && session?.error === "RefreshAccessTokenError") {
     signOut({ redirectTo: "/" });
@@ -62,7 +62,7 @@ export const Header = async ({ className }: { className?: string }) => {
             {headerLinks.map((link, idx) => (
               <li key={idx}>
                 <Link
-                  href="#"
+                  href={link.toLowerCase()}
                   className="block px-3 py-2 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent"
                 >
                   {link}

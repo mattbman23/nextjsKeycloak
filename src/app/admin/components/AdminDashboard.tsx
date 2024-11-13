@@ -67,7 +67,7 @@ const AdminDashboard = ({
   return (
     <Admin dataProvider={dataProvider}>
       <Resource
-        name="todolist"
+        name="todos"
         list={ListGuesser}
         edit={EditGuesser}
         create={PostCreate}
