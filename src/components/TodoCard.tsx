@@ -1,6 +1,6 @@
 "use client";
 
-import { upload_asset } from "@/actions/todo";
+import { delete_todo, upload_asset } from "@/actions/todo";
 import { TodoI } from "@/app/todo/page";
 import { useSession } from "next-auth/react";
 
@@ -36,7 +36,7 @@ export const TodoCard = ({ todo }: { todo: TodoI }) => {
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
       link.href = url;
-      link.download = filename;
+      link.download = filename.replace(todo.id.toString(), "");
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
@@ -48,7 +48,7 @@ export const TodoCard = ({ todo }: { todo: TodoI }) => {
   };
 
   return (
-    <div className="bg-[#A5B4FC] text-xl rounded p-5">
+    <div className="bg-blue-200 text-xl rounded p-5">
       <div className="font-bold">{todo.task}</div>
       <div className="flex flex-row items-center gap-5">
         <div>Completed:</div>
@@ -87,7 +87,7 @@ export const TodoCard = ({ todo }: { todo: TodoI }) => {
 
       {todo.resources ? (
         <>
-          <div>Resource: {todo.resources}</div>
+          <div>Resource: {todo.resources.replace(todo.id.toString(), "")}</div>
           <button
             onClick={() => download_asset(todo.resources!)}
             className="bg-blue-300 px-3 py-1 rounded"
@@ -107,12 +107,8 @@ export const TodoCard = ({ todo }: { todo: TodoI }) => {
             className="flex flex-col gap-y-3 border border-black rounded p-3 overflow-hidden"
           >
             <div className="w-full text-sm">
-              <input type="file" name="todo_asset" required />
-              <input
-                type="hidden"
-                name="task"
-                value={todo.task.replaceAll(" ", "").toLocaleLowerCase()}
-              />
+              <input type="file" name="file" required />
+              <input type="hidden" name="tid" value={todo.id} />
             </div>
             <button className="bg-blue-300 px-3 py-1 rounded" type="submit">
               Submit
@@ -120,7 +116,17 @@ export const TodoCard = ({ todo }: { todo: TodoI }) => {
           </form>
         </>
       )}
-      <div className="text-sm text-black/50">{formatted_date}</div>
+      <div className="text-sm text-black/50 flex justify-between">
+        <div>{formatted_date}</div>
+        <div
+          onClick={async () => {
+            delete_todo(todo.id);
+          }}
+          className="hover:text-red-600 hover:cursor-pointer"
+        >
+          Delete
+        </div>
+      </div>
     </div>
   );
 };
