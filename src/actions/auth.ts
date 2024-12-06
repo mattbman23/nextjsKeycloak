@@ -1,7 +1,8 @@
 "use server";
 
-import { auth } from "@/auth";
+import { auth, signIn } from "@/auth";
 import { decrypt } from "@/utils/authTokens";
+import { AuthError } from "next-auth";
 
 export const logout_session = async () => {
   const session = await auth();
@@ -22,4 +23,30 @@ export const logout_session = async () => {
   }
 
   return false;
+};
+
+interface ILogin {
+  username: string;
+  password: string;
+}
+
+export const login = async ({ username, password }: ILogin) => {
+  try {
+    await signIn("credentials", {
+      username,
+      password,
+      redirect: false,
+    });
+    return { success: true };
+  } catch (err) {
+    if (err instanceof AuthError) {
+      switch (err.type) {
+        case "CredentialsSignin":
+          return { error: "Invalid Credentials" };
+        default:
+          return { error: "Something went wrong..." };
+      }
+    }
+    throw err;
+  }
 };

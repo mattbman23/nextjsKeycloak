@@ -11,11 +11,14 @@ declare module "next-auth/jwt" {
         name: string;
         email: string;
       };
+      email: string;
+      name: string;
     };
     id_token: string;
-    expires_at: number;
+    expires_in: number;
     refresh_token: string | undefined;
     error: string?;
+    type: string?;
   }
 }
 
@@ -33,5 +36,9 @@ declare module "next-auth" {
   }
   interface User {
     role: string;
+    access_token: string?;
+    id_token: string;
+    expires_in: number;
+    refresh_token: string;
   }
 }
