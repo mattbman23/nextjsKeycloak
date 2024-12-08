@@ -5,7 +5,7 @@ import Link from "next/link";
 export const Header = async ({ className }: { className?: string }) => {
   const session = await auth();
 
-  const headerLinks = ["Todo", "About", "Contact"];
+  const headerLinks = ["Todo", "Chat", "About", "Contact"];
 
   if (session && session?.error === "RefreshAccessTokenError") {
     signOut({ redirectTo: "/" });
